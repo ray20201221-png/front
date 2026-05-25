@@ -1,5 +1,5 @@
 
-const API = "https://你的render網址.onrender.com"; // ← 改這裡
+const API = "https://back-i9l7.onrender.com"; // ← 改這裡
 
 const chatBox = document.getElementById("chat");
 
