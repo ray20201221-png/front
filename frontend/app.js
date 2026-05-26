@@ -1,4 +1,4 @@
-const API = "https://back-i9l7.onrender.com"; // ← 改這裡
+const API = "https://back-i9l7.onrender.com";
 
 const chatBox = document.getElementById("chat");
 
@@ -22,12 +22,22 @@ function addMsg(text,type){
     scrollBottom();
 }
 
-// ⭐ AI loading
+// =====================
+// 🔵 AI loading（三點動畫）
+// =====================
 function addLoadingMsg(id){
     const div = document.createElement("div");
     div.classList.add("msg","bot");
     div.id = id;
-    div.innerHTML = "⌛ AI 思考中...";
+
+    div.innerHTML = `
+        <div class="dot-loader">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    `;
+
     chatBox.appendChild(div);
     scrollBottom();
 }
@@ -41,6 +51,9 @@ function scrollBottom(){
     chatBox.scrollTop = chatBox.scrollHeight;
 }
 
+// =====================
+// 🚀 send message
+// =====================
 async function send(){
 
     const input = document.getElementById("msg");
@@ -50,7 +63,7 @@ async function send(){
     addMsg(msg,"me");
     input.value = "";
 
-    // ⭐ 加 loading
+    // ⭐ loading
     const loadingId = "loading-" + Date.now();
     addLoadingMsg(loadingId);
 
@@ -66,12 +79,15 @@ async function send(){
 
     const data = await res.json();
 
-    // ⭐ 移除 loading
+    // remove loading
     removeLoadingMsg(loadingId);
 
     addMsg(data.reply,"bot");
 }
 
+// =====================
+// 🆕 new chat
+// =====================
 async function newChat(){
 
     await fetch(`${API}/clear`, {
@@ -82,6 +98,9 @@ async function newChat(){
     addMsg("👋 新聊天開始","bot");
 }
 
+// =====================
+// 🚪 logout
+// =====================
 function logout(){
     localStorage.removeItem("token");
     localStorage.removeItem("username");
