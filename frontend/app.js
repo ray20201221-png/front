@@ -1,4 +1,3 @@
-
 const API = "https://back-i9l7.onrender.com"; // ← 改這裡
 
 const chatBox = document.getElementById("chat");
@@ -23,6 +22,21 @@ function addMsg(text,type){
     scrollBottom();
 }
 
+// ⭐ AI loading
+function addLoadingMsg(id){
+    const div = document.createElement("div");
+    div.classList.add("msg","bot");
+    div.id = id;
+    div.innerHTML = "⌛ AI 思考中...";
+    chatBox.appendChild(div);
+    scrollBottom();
+}
+
+function removeLoadingMsg(id){
+    const el = document.getElementById(id);
+    if(el) el.remove();
+}
+
 function scrollBottom(){
     chatBox.scrollTop = chatBox.scrollHeight;
 }
@@ -36,6 +50,10 @@ async function send(){
     addMsg(msg,"me");
     input.value = "";
 
+    // ⭐ 加 loading
+    const loadingId = "loading-" + Date.now();
+    addLoadingMsg(loadingId);
+
     const res = await fetch(`${API}/chat`, {
         method:"POST",
         headers:{
@@ -47,6 +65,10 @@ async function send(){
     });
 
     const data = await res.json();
+
+    // ⭐ 移除 loading
+    removeLoadingMsg(loadingId);
+
     addMsg(data.reply,"bot");
 }
 
