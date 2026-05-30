@@ -21,7 +21,7 @@ if(!localStorage.getItem("token")){
             <div class="brand-mark">R</div>
             <div>
                 <h1>RUI AI</h1>
-                <p data-i18n="appSubtitle">研究助理</p>
+                <p data-i18n="appSubtitle">Research assistant</p>
             </div>
         </div>
 
@@ -30,30 +30,35 @@ if(!localStorage.getItem("token")){
             <button data-lang="en" onclick="setLanguage('en')">EN</button>
         </div>
 
-        <button class="nav-button primary" onclick="newChat()" data-i18n-title="newChat" title="新聊天">
+        <button class="nav-button primary" onclick="newChat()" data-i18n-title="newChat" title="New chat">
             <i data-lucide="plus"></i>
-            <span data-i18n="newChat">新聊天</span>
+            <span data-i18n="newChat">New chat</span>
         </button>
-        <button id="adminButton" class="nav-button" onclick="openAdmin()" style="display:none" data-i18n-title="admin" title="管理後台">
+        <button id="adminButton" class="nav-button" onclick="openAdmin()" style="display:none" data-i18n-title="admin" title="Admin">
             <i data-lucide="shield"></i>
-            <span data-i18n="admin">管理後台</span>
+            <span data-i18n="admin">Admin</span>
         </button>
-        <button class="nav-button" onclick="logout()" data-i18n-title="logout" title="登出">
+        <button class="nav-button" onclick="logout()" data-i18n-title="logout" title="Logout">
             <i data-lucide="log-out"></i>
-            <span data-i18n="logout">登出</span>
+            <span data-i18n="logout">Logout</span>
         </button>
+
+        <div class="sidebar-section">
+            <h2 data-i18n="chatHistory">Chat history</h2>
+            <div id="conversationList" class="conversation-list"></div>
+        </div>
 
         <div class="sidebar-note">
             <span data-i18n="ragLabel">RAG</span>
-            <p data-i18n="ragNote">有知識庫文件時，系統會啟用 HyDE 檢索與重排序。</p>
+            <p data-i18n="ragNote">HyDE retrieval and reranking are enabled when knowledge files are available.</p>
         </div>
     </aside>
 
     <main class="main">
         <header class="topbar">
             <div>
-                <span class="eyebrow" data-i18n="chatWorkspace">聊天工作區</span>
-                <h2 data-i18n="askTitle">詢問 RUI AI</h2>
+                <span class="eyebrow" data-i18n="chatWorkspace">Chat workspace</span>
+                <h2 data-i18n="askTitle">Ask RUI AI</h2>
             </div>
             <div id="userBadge" class="user-badge"></div>
         </header>
@@ -61,12 +66,12 @@ if(!localStorage.getItem("token")){
         <div id="chat" class="chat-box">
             <section id="welcome" class="welcome-panel">
                 <div class="assistant-mark">AI</div>
-                <h2 data-i18n="welcomeTitle">今天想一起處理什麼？</h2>
-                <p data-i18n="welcomeText">你可以問問題、探索文件，或測試 RAG 流程。</p>
+                <h2 data-i18n="welcomeTitle">What can we work through today?</h2>
+                <p data-i18n="welcomeText">Ask a question, explore your documents, or test the RAG pipeline.</p>
                 <div class="prompt-row">
-                    <button onclick="usePrompt('請幫我整理知識庫內容。')" data-i18n="promptKnowledge">整理知識庫</button>
-                    <button onclick="usePrompt('請解釋這個專案的 RAG 系統如何運作。')" data-i18n="promptRag">解釋 RAG</button>
-                    <button onclick="usePrompt('請協助我檢查聊天機器人的部署問題。')" data-i18n="promptDeploy">協助部署除錯</button>
+                    <button onclick="usePrompt(t('promptKnowledgeText'))" data-i18n="promptKnowledge">Summarize knowledge</button>
+                    <button onclick="usePrompt(t('promptRagText'))" data-i18n="promptRag">Explain RAG</button>
+                    <button onclick="usePrompt(t('promptDeployText'))" data-i18n="promptDeploy">Debug deployment</button>
                 </div>
             </section>
         </div>
@@ -74,13 +79,13 @@ if(!localStorage.getItem("token")){
         <form class="composer" onsubmit="event.preventDefault(); send();">
             <input
                 id="msg"
-                placeholder="傳訊息給 RUI AI..."
+                placeholder="Message RUI AI..."
                 data-i18n-placeholder="messagePlaceholder"
                 autocomplete="off"
             >
-            <button class="send-button" type="submit" data-i18n-title="send" title="送出">
+            <button class="send-button" type="submit" data-i18n-title="send" title="Send">
                 <i data-lucide="send-horizontal"></i>
-                <span data-i18n="send">送出</span>
+                <span data-i18n="send">Send</span>
             </button>
         </form>
     </main>

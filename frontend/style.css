@@ -575,6 +575,40 @@ select:focus{
     gap:8px;
 }
 
+.conversation-list{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    max-height:260px;
+    overflow:auto;
+}
+
+.conversation-item{
+    width:100%;
+    min-height:36px;
+    padding:8px 10px;
+    border-radius:8px;
+    background:transparent;
+    color:#d0d5dd;
+    text-align:left;
+    cursor:pointer;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.conversation-item:hover,
+.conversation-item.active{
+    background:var(--sidebar-2);
+    color:#ffffff;
+}
+
+.empty-history{
+    color:#aab5c4;
+    font-size:13px;
+    line-height:1.5;
+}
+
 .admin-list-item{
     width:100%;
     justify-content:flex-start;
@@ -735,5 +769,281 @@ select{
 
     .msg{
         max-width:94%;
+    }
+}
+
+/* =========================
+   POLISH EFFECTS
+========================= */
+
+body{
+    background:
+        linear-gradient(rgba(16, 24, 40, .035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(16, 24, 40, .035) 1px, transparent 1px),
+        radial-gradient(circle at 20% 0%, rgba(15, 118, 110, .10), transparent 30%),
+        radial-gradient(circle at 85% 10%, rgba(37, 99, 235, .09), transparent 28%),
+        var(--bg);
+    background-size:24px 24px, 24px 24px, auto, auto;
+    opacity:0;
+    animation:pageReveal .45s ease forwards;
+}
+
+.sidebar{
+    background:
+        linear-gradient(180deg, rgba(255,255,255,.045), transparent 42%),
+        var(--sidebar);
+}
+
+.sidebar > *{
+    animation:slideInLeft .42s ease both;
+}
+
+.sidebar > *:nth-child(2){ animation-delay:.04s; }
+.sidebar > *:nth-child(3){ animation-delay:.08s; }
+.sidebar > *:nth-child(4){ animation-delay:.12s; }
+.sidebar > *:nth-child(5){ animation-delay:.16s; }
+.sidebar > *:nth-child(6){ animation-delay:.20s; }
+
+.brand-mark{
+    box-shadow:0 10px 28px rgba(32, 180, 134, .24);
+}
+
+.main,
+.auth-panel,
+.admin-section{
+    animation:panelRise .48s ease both;
+}
+
+.topbar{
+    position:relative;
+    z-index:2;
+}
+
+.user-badge,
+.assistant-mark{
+    box-shadow:0 12px 28px rgba(37, 99, 235, .14);
+}
+
+.assistant-mark{
+    animation:softPulse 3.5s ease-in-out infinite;
+}
+
+.chat-box{
+    scroll-behavior:smooth;
+}
+
+.welcome-panel{
+    animation:welcomeIn .55s ease both;
+}
+
+.message-row{
+    animation:messageIn .24s ease both;
+}
+
+.msg{
+    animation:bubbleIn .2s ease both;
+}
+
+.message-row.bot .msg,
+.bot{
+    box-shadow:0 12px 30px rgba(15, 23, 42, .07);
+}
+
+.message-row.me .msg,
+.me{
+    background:linear-gradient(135deg, #0f766e, #0b5f59);
+    box-shadow:0 14px 30px rgba(15, 118, 110, .18);
+}
+
+.nav-button,
+.small-button,
+.auth-submit,
+.send-button,
+.prompt-row button,
+.admin-list-item,
+.conversation-item,
+.language-switch button{
+    transition:
+        background .15s ease,
+        color .15s ease,
+        transform .15s ease,
+        border-color .15s ease,
+        box-shadow .15s ease;
+}
+
+.nav-button:hover,
+.small-button:hover,
+.auth-submit:hover,
+.send-button:hover,
+.prompt-row button:hover,
+.admin-list-item:hover,
+.conversation-item:hover{
+    transform:translateY(-1px);
+}
+
+.nav-button:active,
+.small-button:active,
+.auth-submit:active,
+.send-button:active,
+.prompt-row button:active,
+.conversation-item:active{
+    transform:translateY(0) scale(.99);
+}
+
+.nav-button.primary,
+.language-switch button.active{
+    box-shadow:0 10px 22px rgba(0,0,0,.14);
+}
+
+.prompt-row button{
+    box-shadow:0 8px 20px rgba(15, 23, 42, .06);
+}
+
+.prompt-row button:hover{
+    border-color:#14b8a6;
+    box-shadow:0 14px 28px rgba(15, 118, 110, .11);
+}
+
+.composer input,
+.field{
+    transition:border-color .15s ease, box-shadow .15s ease, transform .15s ease;
+}
+
+.composer input:focus,
+.field:focus-within{
+    transform:translateY(-1px);
+}
+
+.send-button,
+.auth-submit,
+.small-button{
+    position:relative;
+    overflow:hidden;
+    box-shadow:0 12px 26px rgba(15, 118, 110, .22);
+}
+
+.send-button::after,
+.auth-submit::after,
+.small-button::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(120deg, transparent, rgba(255,255,255,.24), transparent);
+    transform:translateX(-120%);
+    transition:transform .55s ease;
+}
+
+.send-button:hover::after,
+.auth-submit:hover::after,
+.small-button:hover::after{
+    transform:translateX(120%);
+}
+
+.typing-loader{
+    display:inline-flex;
+    gap:6px;
+    align-items:center;
+}
+
+.typing-loader span{
+    width:6px;
+    height:6px;
+    background:#667085;
+    border-radius:50%;
+    display:inline-block;
+    animation:dotBounce 1.2s infinite ease-in-out;
+}
+
+.typing-loader span:nth-child(2){
+    animation-delay:.2s;
+}
+
+.typing-loader span:nth-child(3){
+    animation-delay:.4s;
+}
+
+.conversation-item.active{
+    box-shadow:inset 3px 0 0 #20b486;
+}
+
+@keyframes pageReveal{
+    from{ opacity:0; }
+    to{ opacity:1; }
+}
+
+@keyframes slideInLeft{
+    from{
+        opacity:0;
+        transform:translateX(-10px);
+    }
+    to{
+        opacity:1;
+        transform:translateX(0);
+    }
+}
+
+@keyframes panelRise{
+    from{
+        opacity:0;
+        transform:translateY(10px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+@keyframes welcomeIn{
+    from{
+        opacity:0;
+        transform:translateY(12px) scale(.98);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0) scale(1);
+    }
+}
+
+@keyframes messageIn{
+    from{
+        opacity:0;
+        transform:translateY(8px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+@keyframes bubbleIn{
+    from{
+        opacity:0;
+        transform:scale(.985);
+    }
+    to{
+        opacity:1;
+        transform:scale(1);
+    }
+}
+
+@keyframes softPulse{
+    0%, 100%{
+        transform:translateY(0);
+        box-shadow:0 12px 28px rgba(15, 118, 110, .18);
+    }
+    50%{
+        transform:translateY(-2px);
+        box-shadow:0 18px 38px rgba(15, 118, 110, .26);
+    }
+}
+
+@media (prefers-reduced-motion: reduce){
+    *,
+    *::before,
+    *::after{
+        animation-duration:.001ms !important;
+        animation-iteration-count:1 !important;
+        transition-duration:.001ms !important;
+        scroll-behavior:auto !important;
     }
 }

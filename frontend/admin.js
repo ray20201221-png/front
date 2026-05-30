@@ -107,6 +107,7 @@ function renderRagStatus(){
 
     ragStatus.innerHTML = `
         <p>${t("fileCount")}：${currentRagStatus.file_count}</p>
+        <p>${t("minConfidence")}：${currentRagStatus.min_confidence}</p>
         <p>${t("folder")}：${currentRagStatus.knowledge_dir}</p>
         <ul>${files}</ul>
     `;

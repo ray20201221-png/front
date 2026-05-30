@@ -6,6 +6,10 @@ const username = localStorage.getItem("username") || "User";
 const isAdmin = localStorage.getItem("is_admin") === "1";
 const adminButton = document.getElementById("adminButton");
 const userBadge = document.getElementById("userBadge");
+const conversationList = document.getElementById("conversationList");
+let activeConversationId = null;
+
+document.body.classList.add("app-ready");
 
 if(adminButton && isAdmin){
     adminButton.style.display = "flex";
@@ -63,6 +67,26 @@ function addMsg(text, type){
     scrollBottom();
 }
 
+function clearMessages(){
+    chatBox.innerHTML = "";
+}
+
+function showWelcome(){
+    chatBox.innerHTML = `
+        <section id="welcome" class="welcome-panel">
+            <div class="assistant-mark">AI</div>
+            <h2 data-i18n="welcomeTitle">What can we work through today?</h2>
+            <p data-i18n="welcomeText">Ask a question, explore your documents, or test the RAG pipeline.</p>
+            <div class="prompt-row">
+                <button onclick="usePrompt(t('promptKnowledgeText'))" data-i18n="promptKnowledge">Summarize knowledge</button>
+                <button onclick="usePrompt(t('promptRagText'))" data-i18n="promptRag">Explain RAG</button>
+                <button onclick="usePrompt(t('promptDeployText'))" data-i18n="promptDeploy">Debug deployment</button>
+            </div>
+        </section>
+    `;
+    applyI18n();
+}
+
 function addLoadingMsg(id){
     removeWelcome();
 
@@ -77,7 +101,7 @@ function addLoadingMsg(id){
     const bubble = document.createElement("div");
     bubble.className = "msg loading";
     bubble.innerHTML = `
-        <div class="dot-loader">
+        <div class="typing-loader">
             <span></span>
             <span></span>
             <span></span>
@@ -123,8 +147,12 @@ async function send(){
         }
 
         const data = await res.json();
+        if(data.conversation_id){
+            activeConversationId = data.conversation_id;
+        }
         removeLoadingMsg(loadingId);
         addMsg(data.reply || t("backendNoReply"), "bot");
+        loadConversations();
     }catch(err){
         console.log(err);
         removeLoadingMsg(loadingId);
@@ -133,13 +161,78 @@ async function send(){
 }
 
 async function newChat(){
-    await fetch(`${API}/clear`, {
+    const res = await fetch(`${API}/clear`, {
         method: "POST",
         headers: authHeaders()
     });
 
-    chatBox.innerHTML = "";
-    addMsg(t("freshChat"), "bot");
+    if(res.status === 401){
+        logout();
+        return;
+    }
+
+    const data = await res.json();
+    activeConversationId = data.conversation_id;
+    showWelcome();
+    loadConversations();
+}
+
+async function loadConversations(){
+    if(!conversationList) return;
+
+    const res = await fetch(`${API}/conversations`, {
+        headers: authHeaders()
+    });
+
+    if(res.status === 401){
+        logout();
+        return;
+    }
+
+    const conversations = await res.json();
+    conversationList.innerHTML = "";
+
+    if(!conversations.length){
+        conversationList.innerHTML = `<div class="empty-history">${t("noConversations")}</div>`;
+        return;
+    }
+
+    conversations.forEach(conversation => {
+        const button = document.createElement("button");
+        button.className = "conversation-item";
+        if(conversation.id === activeConversationId || conversation.active){
+            button.classList.add("active");
+            activeConversationId = conversation.id;
+        }
+        button.innerText = conversation.title || t("newChat");
+        button.onclick = () => loadConversation(conversation.id);
+        conversationList.appendChild(button);
+    });
+}
+
+async function loadConversation(conversationId){
+    const res = await fetch(`${API}/conversations/${conversationId}/messages`, {
+        headers: authHeaders()
+    });
+
+    if(res.status === 401){
+        logout();
+        return;
+    }
+
+    activeConversationId = conversationId;
+    const messages = await res.json();
+    clearMessages();
+
+    if(!messages.length){
+        showWelcome();
+    }else{
+        messages.forEach(message => {
+            addMsg(message.content, message.role === "user" ? "me" : "bot");
+        });
+    }
+
+    loadConversations();
 }
 
 function openAdmin(){
@@ -152,3 +245,9 @@ function logout(){
     localStorage.removeItem("is_admin");
     location.href = "login.html";
 }
+
+function onLanguageChanged(){
+    loadConversations();
+}
+
+loadConversations();
