@@ -1,6 +1,20 @@
 const API = "https://back-i9l7.onrender.com";
 
 const chatBox = document.getElementById("chat");
+const token = localStorage.getItem("token");
+const isAdmin = localStorage.getItem("is_admin") === "1";
+const adminButton = document.getElementById("adminButton");
+
+if(adminButton && isAdmin){
+    adminButton.style.display = "block";
+}
+
+function authHeaders(){
+    return {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+    };
+}
 
 function handleKey(e){
     if(e.key === "Enter"){
@@ -8,9 +22,9 @@ function handleKey(e){
     }
 }
 
-function addMsg(text,type){
+function addMsg(text, type){
     const div = document.createElement("div");
-    div.classList.add("msg",type);
+    div.classList.add("msg", type);
 
     if(type === "bot"){
         div.innerHTML = marked.parse(text);
@@ -22,12 +36,9 @@ function addMsg(text,type){
     scrollBottom();
 }
 
-// =====================
-// 🔵 AI loading（三點動畫）
-// =====================
 function addLoadingMsg(id){
     const div = document.createElement("div");
-    div.classList.add("msg","bot");
+    div.classList.add("msg", "bot");
     div.id = id;
 
     div.innerHTML = `
@@ -51,58 +62,56 @@ function scrollBottom(){
     chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-// =====================
-// 🚀 send message
-// =====================
 async function send(){
-
     const input = document.getElementById("msg");
     const msg = input.value.trim();
     if(!msg) return;
 
-    addMsg(msg,"me");
+    addMsg(msg, "me");
     input.value = "";
 
-    // ⭐ loading
     const loadingId = "loading-" + Date.now();
     addLoadingMsg(loadingId);
 
-    const res = await fetch(`${API}/chat`, {
-        method:"POST",
-        headers:{
-            "Content-Type":"application/json"
-        },
-        body:JSON.stringify({
-            message:msg
-        })
-    });
+    try{
+        const res = await fetch(`${API}/chat`, {
+            method: "POST",
+            headers: authHeaders(),
+            body: JSON.stringify({ message: msg })
+        });
 
-    const data = await res.json();
+        if(res.status === 401){
+            logout();
+            return;
+        }
 
-    // remove loading
-    removeLoadingMsg(loadingId);
-
-    addMsg(data.reply,"bot");
+        const data = await res.json();
+        removeLoadingMsg(loadingId);
+        addMsg(data.reply || "後端沒有回覆內容", "bot");
+    }catch(err){
+        console.log(err);
+        removeLoadingMsg(loadingId);
+        addMsg("連線失敗，請確認後端是否啟動。", "bot");
+    }
 }
 
-// =====================
-// 🆕 new chat
-// =====================
 async function newChat(){
-
     await fetch(`${API}/clear`, {
-        method:"POST"
+        method: "POST",
+        headers: authHeaders()
     });
 
     chatBox.innerHTML = "";
-    addMsg("👋 新聊天開始","bot");
+    addMsg("已開始新的聊天。", "bot");
 }
 
-// =====================
-// 🚪 logout
-// =====================
+function openAdmin(){
+    location.href = "admin.html";
+}
+
 function logout(){
     localStorage.removeItem("token");
     localStorage.removeItem("username");
+    localStorage.removeItem("is_admin");
     location.href = "login.html";
 }

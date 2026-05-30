@@ -1,76 +1,42 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-
 <meta charset="UTF-8">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RUI AI</title>
-
 <link rel="stylesheet" href="style.css">
-
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-
 </head>
-
 <body>
-
 <script>
-
 if(!localStorage.getItem("token")){
-
     location.href = "login.html";
 }
-
 </script>
 
 <div class="app">
+    <aside class="sidebar">
+        <h1>RUI AI</h1>
 
-<div class="sidebar">
+        <button onclick="newChat()">新聊天</button>
+        <button id="adminButton" onclick="openAdmin()" style="display:none">Admin</button>
+        <button onclick="logout()">登出</button>
+    </aside>
 
-<h1>✨ RUI AI</h1>
+    <main class="main">
+        <div id="chat" class="chat-box"></div>
 
-<button onclick="newChat()">
-＋ 新聊天
-</button>
-
-<button onclick="logout()">
-🚪 登出
-</button>
-
-</div>
-
-<div class="main">
-
-<div id="chat" class="chat-box"></div>
-
-<div class="input-area">
-    
-
-<input
-id="msg"
-placeholder="輸入訊息..."
-onkeydown="handleKey(event)"
->
-<button onclick="startVoice()">
-🎤
-</button>
-<button>
-<label class="upload-btn">
-🖼️
-<input type="file" id="imageInput" accept="image/*" hidden>
-</label>
-</button>
-<button onclick="send()">
-送出
-</button>
-
-</div>
-
-</div>
-
+        <div class="input-area">
+            <input
+                id="msg"
+                placeholder="輸入訊息..."
+                onkeydown="handleKey(event)"
+            >
+            <button onclick="send()">送出</button>
+        </div>
+    </main>
 </div>
 
 <script src="app.js"></script>
-
 </body>
 </html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<script>
+if(!localStorage.getItem("token") || localStorage.getItem("is_admin") !== "1"){
+    location.href = "login.html";
+}
+</script>
+
+<div class="admin-app">
+    <aside class="sidebar">
+        <h1>Admin</h1>
+        <button onclick="location.href='index.html'">回聊天</button>
+        <button onclick="logout()">登出</button>
+
+        <h2>使用者</h2>
+        <div id="userList" class="admin-list"></div>
+    </aside>
+
+    <main class="admin-main">
+        <section class="admin-section">
+            <div class="admin-section-title">
+                <h2>使用者聊天紀錄</h2>
+                <span id="selectedUser"></span>
+            </div>
+            <div id="messageList" class="admin-messages"></div>
+        </section>
+
+        <section class="admin-section">
+            <div class="admin-section-title">
+                <h2>後端程式碼</h2>
+                <select id="codeFile" onchange="loadCodeFile()"></select>
+            </div>
+            <pre id="codeViewer" class="code-viewer"></pre>
+        </section>
+    </main>
+</div>
+
+<script src="admin.js"></script>
+</body>
+</html>
