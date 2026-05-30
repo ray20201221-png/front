@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="style.css">
 <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body>
+<body data-title-key="admin">
 <script>
 if(!localStorage.getItem("token") || localStorage.getItem("is_admin") !== "1"){
     location.href = "login.html";
@@ -20,21 +20,26 @@ if(!localStorage.getItem("token") || localStorage.getItem("is_admin") !== "1"){
             <div class="brand-mark">R</div>
             <div>
                 <h1>Admin</h1>
-                <p>RUI AI console</p>
+                <p data-i18n="consoleSubtitle">RUI AI 控制台</p>
             </div>
         </div>
 
-        <button class="nav-button" onclick="location.href='index.html'" title="Back to chat">
+        <div class="language-switch" aria-label="Language">
+            <button data-lang="zh" onclick="setLanguage('zh')">中文</button>
+            <button data-lang="en" onclick="setLanguage('en')">EN</button>
+        </div>
+
+        <button class="nav-button" onclick="location.href='index.html'" data-i18n-title="chat" title="聊天">
             <i data-lucide="message-square"></i>
-            <span>Chat</span>
+            <span data-i18n="chat">聊天</span>
         </button>
-        <button class="nav-button" onclick="logout()" title="Sign out">
+        <button class="nav-button" onclick="logout()" data-i18n-title="logout" title="登出">
             <i data-lucide="log-out"></i>
-            <span>Logout</span>
+            <span data-i18n="logout">登出</span>
         </button>
 
         <div class="sidebar-section">
-            <h2>Users</h2>
+            <h2 data-i18n="users">使用者</h2>
             <div id="userList" class="admin-list"></div>
         </div>
     </aside>
@@ -43,8 +48,8 @@ if(!localStorage.getItem("token") || localStorage.getItem("is_admin") !== "1"){
         <section class="admin-section">
             <div class="admin-section-title">
                 <div>
-                    <span class="eyebrow">Conversation audit</span>
-                    <h2>User messages</h2>
+                    <span class="eyebrow" data-i18n="conversationAudit">對話稽核</span>
+                    <h2 data-i18n="userMessages">使用者聊天紀錄</h2>
                 </div>
                 <span id="selectedUser" class="pill"></span>
             </div>
@@ -54,8 +59,8 @@ if(!localStorage.getItem("token") || localStorage.getItem("is_admin") !== "1"){
         <section class="admin-section">
             <div class="admin-section-title">
                 <div>
-                    <span class="eyebrow">Backend</span>
-                    <h2>Source viewer</h2>
+                    <span class="eyebrow" data-i18n="backend">後端</span>
+                    <h2 data-i18n="sourceViewer">程式碼檢視</h2>
                 </div>
                 <select id="codeFile" onchange="loadCodeFile()"></select>
             </div>
@@ -65,12 +70,12 @@ if(!localStorage.getItem("token") || localStorage.getItem("is_admin") !== "1"){
         <section class="admin-section admin-rag-section">
             <div class="admin-section-title">
                 <div>
-                    <span class="eyebrow">Retrieval</span>
-                    <h2>RAG knowledge base</h2>
+                    <span class="eyebrow" data-i18n="retrieval">檢索</span>
+                    <h2 data-i18n="ragKnowledge">RAG 知識庫</h2>
                 </div>
-                <button class="small-button" onclick="rebuildRag()" title="Rebuild RAG index">
+                <button class="small-button" onclick="rebuildRag()" data-i18n-title="reindex" title="重建索引">
                     <i data-lucide="refresh-cw"></i>
-                    <span>Reindex</span>
+                    <span data-i18n="reindex">重建索引</span>
                 </button>
             </div>
             <div id="ragStatus" class="rag-status"></div>
@@ -78,6 +83,7 @@ if(!localStorage.getItem("token") || localStorage.getItem("is_admin") !== "1"){
     </main>
 </div>
 
+<script src="i18n.js"></script>
 <script src="admin.js"></script>
 <script>if(window.lucide){ lucide.createIcons(); }</script>
 </body>

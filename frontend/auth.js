@@ -5,7 +5,7 @@ async function register(){
     const password = document.getElementById("password").value;
 
     if(!username || !password){
-        alert("Please enter a username and password.");
+        alert(t("needCredentials"));
         return;
     }
 
@@ -21,14 +21,14 @@ async function register(){
         const data = await res.json();
 
         if(data.success){
-            alert("Account created.");
+            alert(t("accountCreated"));
             location.href = "login.html";
         }else{
-            alert(data.message || "Registration failed.");
+            alert(data.message || t("registerFailed"));
         }
     }catch(err){
         console.log(err);
-        alert("Cannot reach the backend.");
+        alert(t("cannotReachBackend"));
     }
 }
 
@@ -37,7 +37,7 @@ async function login(){
     const password = document.getElementById("password").value;
 
     if(!username || !password){
-        alert("Please enter a username and password.");
+        alert(t("needCredentials"));
         return;
     }
 
@@ -59,10 +59,10 @@ async function login(){
 
             location.href = data.is_admin ? "admin.html" : "index.html";
         }else{
-            alert(data.message || "Login failed.");
+            alert(data.message || t("loginFailed"));
         }
     }catch(err){
         console.log(err);
-        alert("Login failed. Please check whether the backend is running.");
+        alert(t("loginBackendFailed"));
     }
 }

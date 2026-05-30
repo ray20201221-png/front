@@ -124,11 +124,11 @@ async function send(){
 
         const data = await res.json();
         removeLoadingMsg(loadingId);
-        addMsg(data.reply || "The backend did not return a reply.", "bot");
+        addMsg(data.reply || t("backendNoReply"), "bot");
     }catch(err){
         console.log(err);
         removeLoadingMsg(loadingId);
-        addMsg("Connection failed. Please check whether the backend is running.", "bot");
+        addMsg(t("connectionFailed"), "bot");
     }
 }
 
@@ -139,7 +139,7 @@ async function newChat(){
     });
 
     chatBox.innerHTML = "";
-    addMsg("Started a fresh chat.", "bot");
+    addMsg(t("freshChat"), "bot");
 }
 
 function openAdmin(){

@@ -8,6 +8,9 @@ const codeFile = document.getElementById("codeFile");
 const codeViewer = document.getElementById("codeViewer");
 const ragStatus = document.getElementById("ragStatus");
 
+let currentUser = null;
+let currentRagStatus = null;
+
 function authHeaders(){
     return {
         "Authorization": `Bearer ${token}`
@@ -47,6 +50,7 @@ async function loadUsers(){
 }
 
 async function loadMessages(user){
+    currentUser = user;
     selectedUser.innerText = user.username;
     messageList.innerHTML = "";
 
@@ -54,7 +58,7 @@ async function loadMessages(user){
     if(!messages) return;
 
     if(!messages.length){
-        messageList.innerHTML = `<div class="empty-state">這個使用者還沒有聊天紀錄。</div>`;
+        messageList.innerHTML = `<div class="empty-state">${t("emptyMessages")}</div>`;
         return;
     }
 
@@ -94,19 +98,23 @@ async function loadCodeFile(){
     codeViewer.innerText = data.content;
 }
 
-async function loadRagStatus(){
-    const status = await apiGet("/admin/rag/status");
-    if(!status) return;
+function renderRagStatus(){
+    if(!currentRagStatus) return;
 
-    const files = status.files.length
-        ? status.files.map(file => `<li>${file}</li>`).join("")
-        : "<li>尚未加入知識庫文件</li>";
+    const files = currentRagStatus.files.length
+        ? currentRagStatus.files.map(file => `<li>${file}</li>`).join("")
+        : `<li>${t("noKnowledge")}</li>`;
 
     ragStatus.innerHTML = `
-        <p>文件數：${status.file_count}</p>
-        <p>資料夾：${status.knowledge_dir}</p>
+        <p>${t("fileCount")}：${currentRagStatus.file_count}</p>
+        <p>${t("folder")}：${currentRagStatus.knowledge_dir}</p>
         <ul>${files}</ul>
     `;
+}
+
+async function loadRagStatus(){
+    currentRagStatus = await apiGet("/admin/rag/status");
+    renderRagStatus();
 }
 
 async function rebuildRag(){
@@ -120,8 +128,18 @@ async function rebuildRag(){
         return;
     }
 
-    alert("RAG 索引已重建");
+    alert(t("ragRebuilt"));
     loadRagStatus();
+}
+
+function onLanguageChanged(){
+    renderRagStatus();
+    if(currentUser){
+        const empty = messageList.querySelector(".empty-state");
+        if(empty){
+            empty.innerText = t("emptyMessages");
+        }
+    }
 }
 
 function logout(){

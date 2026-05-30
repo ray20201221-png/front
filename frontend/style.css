@@ -123,6 +123,31 @@ button{
     color:#101828;
 }
 
+.language-switch{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:4px;
+    padding:4px;
+    margin:0 0 8px;
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:8px;
+    background:rgba(255,255,255,.06);
+}
+
+.language-switch button{
+    min-height:34px;
+    border-radius:6px;
+    background:transparent;
+    color:#aab5c4;
+    cursor:pointer;
+}
+
+.language-switch button.active{
+    background:#ffffff;
+    color:#101828;
+    font-weight:700;
+}
+
 .nav-button svg,
 .small-button svg,
 .send-button svg,
@@ -260,7 +285,9 @@ button{
 .message-row{
     display:flex;
     gap:12px;
-    width:min(920px, 100%);
+    width:100%;
+    max-width:920px;
+    align-self:flex-start;
 }
 
 .message-row.me{
@@ -287,7 +314,9 @@ button{
 }
 
 .msg{
-    max-width:78%;
+    width:fit-content;
+    max-width:min(720px, calc(100% - 46px));
+    min-width:0;
     padding:13px 15px;
     border-radius:8px;
     line-height:1.65;
@@ -318,6 +347,27 @@ button{
 
 .msg p:last-child{
     margin-bottom:0;
+}
+
+.msg ul,
+.msg ol{
+    margin:0 0 10px 20px;
+    padding:0;
+}
+
+.msg pre,
+.msg code{
+    max-width:100%;
+    white-space:pre-wrap;
+    word-break:break-word;
+}
+
+.msg pre{
+    margin:10px 0 0;
+    padding:10px;
+    border-radius:8px;
+    background:#f2f4f7;
+    overflow:auto;
 }
 
 .composer{
@@ -403,6 +453,20 @@ select:focus{
     border-radius:8px;
     padding:28px;
     box-shadow:var(--shadow);
+}
+
+.auth-language{
+    border-color:var(--line);
+    background:#f2f4f7;
+}
+
+.auth-language button{
+    color:#667085;
+}
+
+.auth-language button.active{
+    background:#101828;
+    color:#ffffff;
 }
 
 .auth-brand{
@@ -531,6 +595,7 @@ select:focus{
 }
 
 .admin-message{
+    width:fit-content;
     max-width:92%;
     padding:10px 12px;
     border-radius:8px;
@@ -640,7 +705,7 @@ select{
     }
 
     .msg{
-        max-width:86%;
+        max-width:calc(100% - 46px);
     }
 
     .admin-main{

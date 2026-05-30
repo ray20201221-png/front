@@ -7,40 +7,46 @@
 <link rel="stylesheet" href="style.css">
 <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body class="auth-body">
+<body class="auth-body" data-title-key="registerTitle">
 <main class="auth-shell">
     <section class="auth-panel">
+        <div class="language-switch auth-language" aria-label="Language">
+            <button data-lang="zh" onclick="setLanguage('zh')">中文</button>
+            <button data-lang="en" onclick="setLanguage('en')">EN</button>
+        </div>
+
         <div class="brand auth-brand">
             <div class="brand-mark">R</div>
             <div>
                 <h1>RUI AI</h1>
-                <p>Private AI workspace</p>
+                <p data-i18n="appSubtitle">研究助理</p>
             </div>
         </div>
 
         <div class="auth-copy">
-            <span class="eyebrow">Create account</span>
-            <h2>Start a new workspace</h2>
+            <span class="eyebrow" data-i18n="createAccount">建立帳號</span>
+            <h2 data-i18n="registerHeading">開始新的工作區</h2>
         </div>
 
         <div class="field">
             <i data-lucide="user"></i>
-            <input id="username" placeholder="Username">
+            <input id="username" placeholder="帳號" data-i18n-placeholder="username">
         </div>
         <div class="field">
             <i data-lucide="lock-keyhole"></i>
-            <input id="password" type="password" placeholder="Password">
+            <input id="password" type="password" placeholder="密碼" data-i18n-placeholder="password">
         </div>
 
         <button class="auth-submit" onclick="register()">
-            <span>Register</span>
+            <span data-i18n="register">註冊</span>
             <i data-lucide="arrow-right"></i>
         </button>
 
-        <p class="auth-link">Already have an account? <a href="login.html">Login</a></p>
+        <p class="auth-link"><span data-i18n="haveAccount">已經有帳號？</span> <a href="login.html" data-i18n="login">登入</a></p>
     </section>
 </main>
 
+<script src="i18n.js"></script>
 <script src="auth.js"></script>
 <script>if(window.lucide){ lucide.createIcons(); }</script>
 </body>
