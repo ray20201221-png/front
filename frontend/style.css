@@ -285,7 +285,7 @@ button{
 .message-row{
     display:flex;
     gap:12px;
-    width:100%;
+    width:fit-content;
     max-width:920px;
     align-self:flex-start;
 }
@@ -315,8 +315,9 @@ button{
 
 .msg{
     width:fit-content;
-    max-width:min(720px, calc(100% - 46px));
+    max-width:min(720px, calc(100vw - 380px));
     min-width:0;
+    flex:0 1 auto;
     padding:13px 15px;
     border-radius:8px;
     line-height:1.65;
@@ -705,7 +706,7 @@ select{
     }
 
     .msg{
-        max-width:calc(100% - 46px);
+        max-width:calc(100vw - 70px);
     }
 
     .admin-main{
