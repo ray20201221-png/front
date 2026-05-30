@@ -2,11 +2,22 @@ const API = "https://back-i9l7.onrender.com";
 
 const chatBox = document.getElementById("chat");
 const token = localStorage.getItem("token");
+const username = localStorage.getItem("username") || "User";
 const isAdmin = localStorage.getItem("is_admin") === "1";
 const adminButton = document.getElementById("adminButton");
+const userBadge = document.getElementById("userBadge");
 
 if(adminButton && isAdmin){
-    adminButton.style.display = "block";
+    adminButton.style.display = "flex";
+}
+
+if(userBadge){
+    userBadge.innerText = username.slice(0, 1).toUpperCase();
+    userBadge.title = username;
+}
+
+if(window.lucide){
+    lucide.createIcons();
 }
 
 function authHeaders(){
@@ -16,32 +27,56 @@ function authHeaders(){
     };
 }
 
-function handleKey(e){
-    if(e.key === "Enter"){
-        send();
-    }
+function removeWelcome(){
+    const welcome = document.getElementById("welcome");
+    if(welcome) welcome.remove();
+}
+
+function usePrompt(text){
+    const input = document.getElementById("msg");
+    input.value = text;
+    input.focus();
 }
 
 function addMsg(text, type){
-    const div = document.createElement("div");
-    div.classList.add("msg", type);
+    removeWelcome();
+
+    const row = document.createElement("div");
+    row.className = `message-row ${type}`;
+
+    const avatar = document.createElement("div");
+    avatar.className = "message-avatar";
+    avatar.innerText = type === "bot" ? "AI" : username.slice(0, 1).toUpperCase();
+
+    const bubble = document.createElement("div");
+    bubble.className = "msg";
 
     if(type === "bot"){
-        div.innerHTML = marked.parse(text);
+        bubble.innerHTML = marked.parse(text);
     }else{
-        div.innerText = text;
+        bubble.innerText = text;
     }
 
-    chatBox.appendChild(div);
+    row.appendChild(avatar);
+    row.appendChild(bubble);
+    chatBox.appendChild(row);
     scrollBottom();
 }
 
 function addLoadingMsg(id){
-    const div = document.createElement("div");
-    div.classList.add("msg", "bot");
-    div.id = id;
+    removeWelcome();
 
-    div.innerHTML = `
+    const row = document.createElement("div");
+    row.className = "message-row bot";
+    row.id = id;
+
+    const avatar = document.createElement("div");
+    avatar.className = "message-avatar";
+    avatar.innerText = "AI";
+
+    const bubble = document.createElement("div");
+    bubble.className = "msg loading";
+    bubble.innerHTML = `
         <div class="dot-loader">
             <span></span>
             <span></span>
@@ -49,7 +84,9 @@ function addLoadingMsg(id){
         </div>
     `;
 
-    chatBox.appendChild(div);
+    row.appendChild(avatar);
+    row.appendChild(bubble);
+    chatBox.appendChild(row);
     scrollBottom();
 }
 
@@ -87,11 +124,11 @@ async function send(){
 
         const data = await res.json();
         removeLoadingMsg(loadingId);
-        addMsg(data.reply || "後端沒有回覆內容", "bot");
+        addMsg(data.reply || "The backend did not return a reply.", "bot");
     }catch(err){
         console.log(err);
         removeLoadingMsg(loadingId);
-        addMsg("連線失敗，請確認後端是否啟動。", "bot");
+        addMsg("Connection failed. Please check whether the backend is running.", "bot");
     }
 }
 
@@ -102,7 +139,7 @@ async function newChat(){
     });
 
     chatBox.innerHTML = "";
-    addMsg("已開始新的聊天。", "bot");
+    addMsg("Started a fresh chat.", "bot");
 }
 
 function openAdmin(){

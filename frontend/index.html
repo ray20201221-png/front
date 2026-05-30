@@ -6,6 +6,7 @@
 <title>RUI AI</title>
 <link rel="stylesheet" href="style.css">
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
 <script>
@@ -14,26 +15,68 @@ if(!localStorage.getItem("token")){
 }
 </script>
 
-<div class="app">
+<div class="app shell">
     <aside class="sidebar">
-        <h1>RUI AI</h1>
+        <div class="brand">
+            <div class="brand-mark">R</div>
+            <div>
+                <h1>RUI AI</h1>
+                <p>Research assistant</p>
+            </div>
+        </div>
 
-        <button onclick="newChat()">新聊天</button>
-        <button id="adminButton" onclick="openAdmin()" style="display:none">Admin</button>
-        <button onclick="logout()">登出</button>
+        <button class="nav-button primary" onclick="newChat()" title="Start a new chat">
+            <i data-lucide="plus"></i>
+            <span>New chat</span>
+        </button>
+        <button id="adminButton" class="nav-button" onclick="openAdmin()" style="display:none" title="Open admin console">
+            <i data-lucide="shield"></i>
+            <span>Admin</span>
+        </button>
+        <button class="nav-button" onclick="logout()" title="Sign out">
+            <i data-lucide="log-out"></i>
+            <span>Logout</span>
+        </button>
+
+        <div class="sidebar-note">
+            <span>RAG</span>
+            <p>HyDE retrieval and reranking are enabled when knowledge files are available.</p>
+        </div>
     </aside>
 
     <main class="main">
-        <div id="chat" class="chat-box"></div>
+        <header class="topbar">
+            <div>
+                <span class="eyebrow">Chat workspace</span>
+                <h2>Ask RUI AI</h2>
+            </div>
+            <div id="userBadge" class="user-badge"></div>
+        </header>
 
-        <div class="input-area">
+        <div id="chat" class="chat-box">
+            <section id="welcome" class="welcome-panel">
+                <div class="assistant-mark">AI</div>
+                <h2>What can we work through today?</h2>
+                <p>Ask a question, explore your documents, or test the RAG pipeline.</p>
+                <div class="prompt-row">
+                    <button onclick="usePrompt('Summarize the knowledge base for me.')">Summarize knowledge</button>
+                    <button onclick="usePrompt('Explain how the RAG system works in this project.')">Explain RAG</button>
+                    <button onclick="usePrompt('Help me debug my chatbot deployment.')">Debug deployment</button>
+                </div>
+            </section>
+        </div>
+
+        <form class="composer" onsubmit="event.preventDefault(); send();">
             <input
                 id="msg"
-                placeholder="輸入訊息..."
-                onkeydown="handleKey(event)"
+                placeholder="Message RUI AI..."
+                autocomplete="off"
             >
-            <button onclick="send()">送出</button>
-        </div>
+            <button class="send-button" type="submit" title="Send message">
+                <i data-lucide="send-horizontal"></i>
+                <span>Send</span>
+            </button>
+        </form>
     </main>
 </div>
 

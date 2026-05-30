@@ -6,6 +6,7 @@ const selectedUser = document.getElementById("selectedUser");
 const messageList = document.getElementById("messageList");
 const codeFile = document.getElementById("codeFile");
 const codeViewer = document.getElementById("codeViewer");
+const ragStatus = document.getElementById("ragStatus");
 
 function authHeaders(){
     return {
@@ -93,6 +94,36 @@ async function loadCodeFile(){
     codeViewer.innerText = data.content;
 }
 
+async function loadRagStatus(){
+    const status = await apiGet("/admin/rag/status");
+    if(!status) return;
+
+    const files = status.files.length
+        ? status.files.map(file => `<li>${file}</li>`).join("")
+        : "<li>尚未加入知識庫文件</li>";
+
+    ragStatus.innerHTML = `
+        <p>文件數：${status.file_count}</p>
+        <p>資料夾：${status.knowledge_dir}</p>
+        <ul>${files}</ul>
+    `;
+}
+
+async function rebuildRag(){
+    const data = await fetch(`${API}/admin/rag/reindex`, {
+        method: "POST",
+        headers: authHeaders()
+    });
+
+    if(data.status === 401 || data.status === 403){
+        logout();
+        return;
+    }
+
+    alert("RAG 索引已重建");
+    loadRagStatus();
+}
+
 function logout(){
     localStorage.removeItem("token");
     localStorage.removeItem("username");
@@ -102,3 +133,4 @@ function logout(){
 
 loadUsers();
 loadCodeFiles();
+loadRagStatus();

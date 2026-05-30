@@ -3,24 +3,45 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>登入</title>
+<title>Login | RUI AI</title>
 <link rel="stylesheet" href="style.css">
+<script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body class="auth-body">
-<div class="auth-card">
-    <h1>RUI AI</h1>
+<main class="auth-shell">
+    <section class="auth-panel">
+        <div class="brand auth-brand">
+            <div class="brand-mark">R</div>
+            <div>
+                <h1>RUI AI</h1>
+                <p>Private AI workspace</p>
+            </div>
+        </div>
 
-    <input id="username" placeholder="帳號">
-    <input id="password" type="password" placeholder="密碼">
+        <div class="auth-copy">
+            <span class="eyebrow">Welcome back</span>
+            <h2>Sign in to continue</h2>
+        </div>
 
-    <button onclick="login()">登入</button>
+        <div class="field">
+            <i data-lucide="user"></i>
+            <input id="username" placeholder="Username">
+        </div>
+        <div class="field">
+            <i data-lucide="lock-keyhole"></i>
+            <input id="password" type="password" placeholder="Password">
+        </div>
 
-    <p>
-        還沒有帳號？
-        <a href="register.html">註冊</a>
-    </p>
-</div>
+        <button class="auth-submit" onclick="login()">
+            <span>Login</span>
+            <i data-lucide="arrow-right"></i>
+        </button>
+
+        <p class="auth-link">No account yet? <a href="register.html">Create one</a></p>
+    </section>
+</main>
 
 <script src="auth.js"></script>
+<script>if(window.lucide){ lucide.createIcons(); }</script>
 </body>
 </html>

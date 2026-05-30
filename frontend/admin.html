@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin</title>
+<title>Admin | RUI AI</title>
 <link rel="stylesheet" href="style.css">
+<script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
 <script>
@@ -13,35 +14,71 @@ if(!localStorage.getItem("token") || localStorage.getItem("is_admin") !== "1"){
 }
 </script>
 
-<div class="admin-app">
+<div class="admin-app shell">
     <aside class="sidebar">
-        <h1>Admin</h1>
-        <button onclick="location.href='index.html'">回聊天</button>
-        <button onclick="logout()">登出</button>
+        <div class="brand">
+            <div class="brand-mark">R</div>
+            <div>
+                <h1>Admin</h1>
+                <p>RUI AI console</p>
+            </div>
+        </div>
 
-        <h2>使用者</h2>
-        <div id="userList" class="admin-list"></div>
+        <button class="nav-button" onclick="location.href='index.html'" title="Back to chat">
+            <i data-lucide="message-square"></i>
+            <span>Chat</span>
+        </button>
+        <button class="nav-button" onclick="logout()" title="Sign out">
+            <i data-lucide="log-out"></i>
+            <span>Logout</span>
+        </button>
+
+        <div class="sidebar-section">
+            <h2>Users</h2>
+            <div id="userList" class="admin-list"></div>
+        </div>
     </aside>
 
     <main class="admin-main">
         <section class="admin-section">
             <div class="admin-section-title">
-                <h2>使用者聊天紀錄</h2>
-                <span id="selectedUser"></span>
+                <div>
+                    <span class="eyebrow">Conversation audit</span>
+                    <h2>User messages</h2>
+                </div>
+                <span id="selectedUser" class="pill"></span>
             </div>
             <div id="messageList" class="admin-messages"></div>
         </section>
 
         <section class="admin-section">
             <div class="admin-section-title">
-                <h2>後端程式碼</h2>
+                <div>
+                    <span class="eyebrow">Backend</span>
+                    <h2>Source viewer</h2>
+                </div>
                 <select id="codeFile" onchange="loadCodeFile()"></select>
             </div>
             <pre id="codeViewer" class="code-viewer"></pre>
+        </section>
+
+        <section class="admin-section admin-rag-section">
+            <div class="admin-section-title">
+                <div>
+                    <span class="eyebrow">Retrieval</span>
+                    <h2>RAG knowledge base</h2>
+                </div>
+                <button class="small-button" onclick="rebuildRag()" title="Rebuild RAG index">
+                    <i data-lucide="refresh-cw"></i>
+                    <span>Reindex</span>
+                </button>
+            </div>
+            <div id="ragStatus" class="rag-status"></div>
         </section>
     </main>
 </div>
 
 <script src="admin.js"></script>
+<script>if(window.lucide){ lucide.createIcons(); }</script>
 </body>
 </html>

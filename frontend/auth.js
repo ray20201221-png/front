@@ -5,7 +5,7 @@ async function register(){
     const password = document.getElementById("password").value;
 
     if(!username || !password){
-        alert("請輸入帳號和密碼");
+        alert("Please enter a username and password.");
         return;
     }
 
@@ -21,14 +21,14 @@ async function register(){
         const data = await res.json();
 
         if(data.success){
-            alert("註冊成功");
+            alert("Account created.");
             location.href = "login.html";
         }else{
-            alert(data.message || "註冊失敗");
+            alert(data.message || "Registration failed.");
         }
     }catch(err){
         console.log(err);
-        alert("無法連線到後端");
+        alert("Cannot reach the backend.");
     }
 }
 
@@ -37,7 +37,7 @@ async function login(){
     const password = document.getElementById("password").value;
 
     if(!username || !password){
-        alert("請輸入帳號和密碼");
+        alert("Please enter a username and password.");
         return;
     }
 
@@ -59,10 +59,10 @@ async function login(){
 
             location.href = data.is_admin ? "admin.html" : "index.html";
         }else{
-            alert(data.message || "登入失敗");
+            alert(data.message || "Login failed.");
         }
     }catch(err){
         console.log(err);
-        alert("登入失敗，請確認後端是否啟動");
+        alert("Login failed. Please check whether the backend is running.");
     }
 }
